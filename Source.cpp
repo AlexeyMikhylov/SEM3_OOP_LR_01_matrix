@@ -24,16 +24,7 @@ class DynamicMatrix
 		}
 
 		void newMatrix()
-		{
-			/*
-			for (int i = 0; i < rows; ++i)
-			{
-				delete[] matrix[i];
-			}
-
-			delete[] matrix;
-			*/
-			
+		{	
 			matrix = new int* [rows];
 			for (int i = 0; i < rows; i++)
 				matrix[i] = new int[cols];
@@ -70,6 +61,43 @@ class DynamicMatrix
 			matrix = new int* [rows];
 			for (int i = 0; i < rows; i++)
 				matrix[i] = new int[cols];
+		}
+
+		// Конструктор копирования
+		DynamicMatrix(const DynamicMatrix& other) : rows(other.rows), cols(other.cols) {
+			matrix = new int* [rows];
+			for (int i = 0; i < rows; i++) {
+				matrix[i] = new int[cols];
+				for (int j = 0; j < cols; j++) {
+					matrix[i][j] = other.matrix[i][j];
+				}
+			}
+		}
+
+		// Оператор присваивания
+		DynamicMatrix& operator=(const DynamicMatrix& other) {
+			if (this == &other) {
+				return *this;
+			}
+
+			// Освобождаем старую память
+			for (int i = 0; i < rows; i++) {
+				delete[] matrix[i];
+			}
+			delete[] matrix;
+
+			// Копируем новые данные
+			rows = other.rows;
+			cols = other.cols;
+			matrix = new int* [rows];
+			for (int i = 0; i < rows; i++) {
+				matrix[i] = new int[cols];
+				for (int j = 0; j < cols; j++) {
+					matrix[i][j] = other.matrix[i][j];
+				}
+			}
+
+			return *this;
 		}
 
 		~DynamicMatrix()
@@ -172,7 +200,7 @@ class DynamicMatrix
 		}
 
 		//Сложение матриц
-		void sum(DynamicMatrix sumMatrix)
+		void sum(const DynamicMatrix sumMatrix)
 		{
 			if (rows == sumMatrix.rows && cols == sumMatrix.cols)
 			{
@@ -186,31 +214,44 @@ class DynamicMatrix
 			}
 			else
 			{
-				cout << "\nmatrixes should have the same dimensions!\n" << endl;
+				cout << "\nERROR:\nmatrixes should have the same dimensions!\n" << endl;
 			}
 		}
 
-		//Сложение матриц
-		void sub(int** matrix2, int rows2, int cols2)
+		//Вычитание матриц
+		void sub(const DynamicMatrix subMatrix)
 		{
-			if (rows == rows2 && cols == cols2)
+			if (rows == subMatrix.rows && cols == subMatrix.cols)
 			{
 				for (int i = 0; i < rows; i++)
 				{
 					for (int j = 0; j < cols; j++)
 					{
-						matrix[i][j] -= matrix2[i][j];
+						matrix[i][j] -= subMatrix.matrix[i][j];
 					}
 				}
 			}
 			else
 			{
-				cout << "\nmatrixes should have the same dimensions!\n" << endl;
+				cout << "\nERROR:\nmatrixes should have the same dimensions!\n" << endl;
 			}
 		}
 
 		//Умножение матриц
+		void mul(const DynamicMatrix mulMatrix)
+		{
+			DynamicMatrix tmpMatrix;
 
+			if (cols == mulMatrix.rows)
+			{
+				//
+
+			}
+			else
+			{
+				cout << "n\ERROR:\nnumber of cols in first matrix should be equal to the number of rows in second matrix!\n" << endl;
+			}
+		}
 
 };
 
@@ -231,19 +272,26 @@ int main()
 	test2.fillMatrix();
 	test2.printMatrix();
 
-	
+	cout << "\n-----------------------\n" << endl;
+
+	test.printMatrix();
+	test2.printMatrix();
+
 	test.sum(test2);
 	test.printMatrix();
 	
-	/*
+	
 	cout << "\n-----------------------\n" << endl;
 
 	test2.printMatrix();
 	test.printMatrix();
 
-	test2.sub(test.matrix, test.rows, test.cols);
+	test2.sub(test);
 	test2.printMatrix();
-	*/
+
+	cout << "\n-----------------------\n" << endl;
+
+
 
 	return 0;
 }
