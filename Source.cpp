@@ -9,8 +9,8 @@ class DynamicMatrix
 {
 	private:
 
+		int** matrix;
 		int rows, cols;
-		int s_rows, s_cols;
 
 		void setMatrixDims()
 		{
@@ -25,14 +25,15 @@ class DynamicMatrix
 
 		void newMatrix()
 		{
-			/*for (int i = 0; i < rows; i++)
+			/*
+			for (int i = 0; i < rows; ++i)
 			{
 				delete[] matrix[i];
 			}
 
 			delete[] matrix;
 			*/
-
+			
 			matrix = new int* [rows];
 			for (int i = 0; i < rows; i++)
 				matrix[i] = new int[cols];
@@ -64,9 +65,7 @@ class DynamicMatrix
 
 	public:
 
-		int** matrix;
-
-		/*DynamicMatrix() : rows(1), cols(1)
+		DynamicMatrix() : rows(1), cols(1)
 		{
 			matrix = new int* [rows];
 			for (int i = 0; i < rows; i++)
@@ -75,13 +74,13 @@ class DynamicMatrix
 
 		~DynamicMatrix()
 		{
-			for (int i = 0; i < rows; i++)	
+			for (int i = 0; i < rows; ++i)	
 			{
 				delete[] matrix[i];
 			}
 
 			delete[] matrix;
-		}*/
+		}
 
 		void fillMatrix()
 		{
@@ -124,6 +123,7 @@ class DynamicMatrix
 
 		void sumRows()
 		{
+			int s_rows;
 			cout << "sum of rows" << endl;
 			for (int i = 0; i < rows; i++)
 			{
@@ -139,6 +139,7 @@ class DynamicMatrix
 
 		void sumCols()
 		{
+			int s_cols;
 			cout << "sum of cols" << endl;
 			for (int j = 0; j < cols; j++)
 			{
@@ -171,17 +172,46 @@ class DynamicMatrix
 		}
 
 		//Сложение матриц
-		void sum(int** matrix2)
+		void sum(DynamicMatrix sumMatrix)
 		{
-
-			for (int i = 0; i < rows; i++)
+			if (rows == sumMatrix.rows && cols == sumMatrix.cols)
 			{
-				for (int j = 0; j < cols; j++)
+				for (int i = 0; i < rows; i++)
 				{
-					matrix[i][j] += matrix2[i][j];
+					for (int j = 0; j < cols; j++)
+					{
+						matrix[i][j] += sumMatrix.matrix[i][j];
+					}
 				}
 			}
+			else
+			{
+				cout << "\nmatrixes should have the same dimensions!\n" << endl;
+			}
 		}
+
+		//Сложение матриц
+		void sub(int** matrix2, int rows2, int cols2)
+		{
+			if (rows == rows2 && cols == cols2)
+			{
+				for (int i = 0; i < rows; i++)
+				{
+					for (int j = 0; j < cols; j++)
+					{
+						matrix[i][j] -= matrix2[i][j];
+					}
+				}
+			}
+			else
+			{
+				cout << "\nmatrixes should have the same dimensions!\n" << endl;
+			}
+		}
+
+		//Умножение матриц
+
+
 };
 
 int main()
@@ -201,8 +231,19 @@ int main()
 	test2.fillMatrix();
 	test2.printMatrix();
 
-	test.sum(test2.matrix);
+	
+	test.sum(test2);
 	test.printMatrix();
 	
+	/*
+	cout << "\n-----------------------\n" << endl;
+
+	test2.printMatrix();
+	test.printMatrix();
+
+	test2.sub(test.matrix, test.rows, test.cols);
+	test2.printMatrix();
+	*/
+
 	return 0;
 }
