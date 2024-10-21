@@ -10,7 +10,6 @@ class DynamicMatrix
 	private:
 
 		int rows, cols;
-		int **matrix;
 		int s_rows, s_cols;
 
 		void setMatrixDims()
@@ -24,11 +23,24 @@ class DynamicMatrix
 			cols = abs(cols);
 		}
 
+		void newMatrix()
+		{
+			/*for (int i = 0; i < rows; i++)
+			{
+				delete[] matrix[i];
+			}
+
+			delete[] matrix;
+			*/
+
+			matrix = new int* [rows];
+			for (int i = 0; i < rows; i++)
+				matrix[i] = new int[cols];
+		}
+
 		void fillMatrixRand()
 		{
-			matrix = (int**)malloc(rows * sizeof(int*));
-			for (int i = 0; i < rows; i++)
-				matrix[i] = (int*)malloc(cols * sizeof(int));
+			newMatrix();
 
 			srand(time(0));
 			for (int i = 0; i < rows; i++)
@@ -38,11 +50,7 @@ class DynamicMatrix
 
 		void fillMatrixManually()
 		{
-			matrix = (int**)malloc(rows * sizeof(int*));
-			for (int i = 0; i < rows; i++)
-			{
-				matrix[i] = (int*)malloc(cols * sizeof(int));
-			}
+			newMatrix();
 
 			for (int i = 0; i < rows; i++)
 			{
@@ -55,6 +63,25 @@ class DynamicMatrix
 		}
 
 	public:
+
+		int** matrix;
+
+		/*DynamicMatrix() : rows(1), cols(1)
+		{
+			matrix = new int* [rows];
+			for (int i = 0; i < rows; i++)
+				matrix[i] = new int[cols];
+		}
+
+		~DynamicMatrix()
+		{
+			for (int i = 0; i < rows; i++)	
+			{
+				delete[] matrix[i];
+			}
+
+			delete[] matrix;
+		}*/
 
 		void fillMatrix()
 		{
@@ -132,58 +159,50 @@ class DynamicMatrix
 			cout << "input number: ";
 			cin >> number;
 
-			cout << "\n" << endl;
+			cout << endl;
 
 			for (int i = 0; i < rows; i++)
 			{
 				for (int j = 0; j < cols; j++)
 				{
-					matrix[i][j] = 0;
+					matrix[i][j] *= number;
 				}
 			}
 		}
 
-		void freeMatrix()
+		//Сложение матриц
+		void sum(int** matrix2)
 		{
-			free(matrix);
+
+			for (int i = 0; i < rows; i++)
+			{
+				for (int j = 0; j < cols; j++)
+				{
+					matrix[i][j] += matrix2[i][j];
+				}
+			}
 		}
-
-	//тут двумерный массив динамический
-
-	//функции:
-
-	// функции принимает аргументом объект:
-		//Сложение матриц 
-
-		//Вычитание матриц
-
-		//Умножение матриц (ФАКультативно)
-		// n1xm1 * n2m2 ; m1=n2
-
-	//Деструктор
 };
 
 int main()
 {
-	//тут объект класса матрица1 и матрица2 (если надо)
-
-	//Через switch-case выбор операции над матрицей(ами)
-
-	//ввод матрицы (одной или двух)
-
-	//вывод матрицы
-
-	//осталные операции
-
 	DynamicMatrix test;
+	DynamicMatrix test2;
+
 	test.fillMatrix();
 	test.printMatrix();
-	test.sumRows();
-	test.sumCols();
-	test.freeMatrix();
+
+	//test.sumRows();
+	//test.sumCols();
 
 	test.by();
 	test.printMatrix();
 
+	test2.fillMatrix();
+	test2.printMatrix();
+
+	test.sum(test2.matrix);
+	test.printMatrix();
+	
 	return 0;
 }
