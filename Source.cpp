@@ -63,13 +63,6 @@ class DynamicMatrix
 
 	public:
 
-		/*DynamicMatrix() : rows(1), cols(1)
-		{
-			matrix = new int* [rows];
-			for (int i = 0; i < rows; i++)
-				matrix[i] = new int[cols];
-		}*/
-
 		DynamicMatrix() : rows(1), cols(1)
 		{
 			matrix = new int* [rows];
@@ -132,7 +125,7 @@ class DynamicMatrix
 
 		~DynamicMatrix()
 		{
-			for (int i = 0; i < rows; ++i)	
+			for (int i = 0; i < rows; ++i)
 			{
 				delete[] matrix[i];
 			}
@@ -286,17 +279,6 @@ class DynamicMatrix
 						}
 					}
 				}
-
-				/*for (int i = 0; i < rows; i++)
-				{
-					for (int j = 0; j < cols; j++)
-					{
-						matrix[i][j] = 0;
-					}
-				}
-
-				matrix = tmpMatrix.matrix; //???
-				*/
 
 				return tmpMatrix;
 
