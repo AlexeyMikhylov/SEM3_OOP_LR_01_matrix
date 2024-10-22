@@ -268,7 +268,7 @@ class DynamicMatrix
 		}
 
 		//Умножение матриц
-		void mul(const DynamicMatrix &mulMatrix)
+		DynamicMatrix mul(const DynamicMatrix &mulMatrix) const
 		{
 			DynamicMatrix tmpMatrix(rows, mulMatrix.cols);
 
@@ -287,7 +287,7 @@ class DynamicMatrix
 					}
 				}
 
-				for (int i = 0; i < rows; i++)
+				/*for (int i = 0; i < rows; i++)
 				{
 					for (int j = 0; j < cols; j++)
 					{
@@ -295,7 +295,10 @@ class DynamicMatrix
 					}
 				}
 
-				matrix = tmpMatrix.matrix;
+				matrix = tmpMatrix.matrix; //???
+				*/
+
+				return tmpMatrix;
 
 			}
 			else
@@ -352,8 +355,8 @@ int main()
 	test.printMatrix();
 	test2.printMatrix();
 
-	test.mul(test2);
-	test.printMatrix();
+	DynamicMatrix result = test.mul(test2);
+	result.printMatrix(); //
 
 	return 0;
 }
