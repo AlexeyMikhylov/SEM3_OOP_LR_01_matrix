@@ -25,6 +25,13 @@ class DynamicMatrix
 
 		void newMatrix()
 		{	
+			/*for (int i = 1; i < rows; i++)
+			{
+				delete[] matrix[i];
+			}*/
+
+			delete[] matrix;
+
 			matrix = new int* [rows];
 			for (int i = 0; i < rows; i++)
 				matrix[i] = new int[cols];
@@ -56,11 +63,18 @@ class DynamicMatrix
 
 	public:
 
-		DynamicMatrix() : rows(1), cols(1)
+		/*DynamicMatrix() : rows(1), cols(1)
 		{
 			matrix = new int* [rows];
 			for (int i = 0; i < rows; i++)
 				matrix[i] = new int[cols];
+		}*/
+
+		DynamicMatrix() : rows(1), cols(1)
+		{
+			matrix = new int* [rows];
+			for (int i = 0; i < rows; i++)
+				matrix[i] = new int[cols] {0}; // Инициализация нулями
 		}
 
 		// Конструктор с заданными размерами
@@ -159,7 +173,7 @@ class DynamicMatrix
 			{
 				for (int j = 0; j < cols; j++)
 				{
-					cout << matrix[i][j] << "\  ";
+					cout << matrix[i][j] << "\  "; //access violation reading location
 				}
 				cout << "\n" << endl;
 			}
@@ -296,6 +310,8 @@ int main()
 {
 	DynamicMatrix test;
 	DynamicMatrix test2;
+
+	test.printMatrix();
 
 	test.fillMatrix();
 	test.printMatrix();
