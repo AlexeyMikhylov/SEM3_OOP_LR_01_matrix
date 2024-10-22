@@ -63,25 +63,39 @@ class DynamicMatrix
 				matrix[i] = new int[cols];
 		}
 
-		// Конструктор копирования
-		DynamicMatrix(const DynamicMatrix& other) : rows(other.rows), cols(other.cols) {
+		// Конструктор с заданными размерами
+		DynamicMatrix(int r, int c) : rows(r), cols(c)
+		{
 			matrix = new int* [rows];
-			for (int i = 0; i < rows; i++) {
+			for (int i = 0; i < rows; i++)
+				matrix[i] = new int[cols] {0}; // Инициализация нулями
+		}
+
+		// Конструктор копирования
+		DynamicMatrix(const DynamicMatrix& other) : rows(other.rows), cols(other.cols)
+		{
+			matrix = new int* [rows];
+			for (int i = 0; i < rows; i++)
+			{
 				matrix[i] = new int[cols];
-				for (int j = 0; j < cols; j++) {
+				for (int j = 0; j < cols; j++)
+				{
 					matrix[i][j] = other.matrix[i][j];
 				}
 			}
 		}
 
 		// Оператор присваивания
-		DynamicMatrix& operator=(const DynamicMatrix& other) {
-			if (this == &other) {
+		DynamicMatrix& operator=(const DynamicMatrix& other)
+		{
+			if (this == &other)
+			{
 				return *this;
 			}
 
 			// Освобождаем старую память
-			for (int i = 0; i < rows; i++) {
+			for (int i = 0; i < rows; i++)
+			{
 				delete[] matrix[i];
 			}
 			delete[] matrix;
@@ -90,9 +104,11 @@ class DynamicMatrix
 			rows = other.rows;
 			cols = other.cols;
 			matrix = new int* [rows];
-			for (int i = 0; i < rows; i++) {
+			for (int i = 0; i < rows; i++)
+			{
 				matrix[i] = new int[cols];
-				for (int j = 0; j < cols; j++) {
+				for (int j = 0; j < cols; j++)
+				{
 					matrix[i][j] = other.matrix[i][j];
 				}
 			}
@@ -238,13 +254,34 @@ class DynamicMatrix
 		}
 
 		//Умножение матриц
-		void mul(const DynamicMatrix mulMatrix)
+		void mul(const DynamicMatrix &mulMatrix)
 		{
-			DynamicMatrix tmpMatrix;
+			DynamicMatrix tmpMatrix(rows, mulMatrix.cols);
 
 			if (cols == mulMatrix.rows)
 			{
-				//
+				for (int i = 0; i < tmpMatrix.rows; i++)
+				{
+					for (int j = 0; j < tmpMatrix.cols; j++)
+					{
+						//error
+						tmpMatrix.matrix[i][j] = 0;
+						for (int k = 0; k < tmpMatrix.cols; k++)
+						{
+							tmpMatrix.matrix[i][j] += matrix[i][k] * mulMatrix.matrix[k][j];
+						}
+					}
+				}
+
+				for (int i = 0; i < rows; i++)
+				{
+					for (int j = 0; j < cols; j++)
+					{
+						matrix[i][j] = 0;
+					}
+				}
+
+				matrix = tmpMatrix.matrix;
 
 			}
 			else
@@ -266,13 +303,18 @@ int main()
 	//test.sumRows();
 	//test.sumCols();
 
+	cout << "\n-----------------------\nmultiply by number\n" << endl;
+
+	test.printMatrix();
 	test.by();
 	test.printMatrix();
+
+	cout << "\n-----------------------\nsecond matrix\n" << endl;
 
 	test2.fillMatrix();
 	test2.printMatrix();
 
-	cout << "\n-----------------------\n" << endl;
+	cout << "\n-----------------------\naddition\n" << endl;
 
 	test.printMatrix();
 	test2.printMatrix();
@@ -281,7 +323,7 @@ int main()
 	test.printMatrix();
 	
 	
-	cout << "\n-----------------------\n" << endl;
+	cout << "\n-----------------------\nsubtraction\n" << endl;
 
 	test2.printMatrix();
 	test.printMatrix();
@@ -289,9 +331,13 @@ int main()
 	test2.sub(test);
 	test2.printMatrix();
 
-	cout << "\n-----------------------\n" << endl;
+	cout << "\n-----------------------\nmultiply matrixes\n" << endl;
 
+	test.printMatrix();
+	test2.printMatrix();
 
+	test.mul(test2);
+	test.printMatrix();
 
 	return 0;
 }
