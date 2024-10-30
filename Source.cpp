@@ -24,12 +24,7 @@ class DynamicMatrix
 		}
 
 		void newMatrix()
-		{	
-			/*for (int i = 1; i < rows; i++)
-			{
-				delete[] matrix[i];
-			}*/
-
+		{
 			delete[] matrix;
 
 			matrix = new int* [rows];
@@ -295,6 +290,7 @@ int main()
 {
 	DynamicMatrix test;
 	DynamicMatrix test2;
+
 
 	test.printMatrix();
 
