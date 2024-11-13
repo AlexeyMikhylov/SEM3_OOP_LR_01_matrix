@@ -5,12 +5,13 @@
 
 using namespace std;
 
+template <typename T>
 class DynamicMatrix
 {
 	private:
 
-		int** matrix;
-		int rows, cols;
+		T** matrix;
+		T rows, cols;
 
 		void setMatrixDims()
 		{
@@ -27,9 +28,9 @@ class DynamicMatrix
 		{
 			delete[] matrix;
 
-			matrix = new int* [rows];
+			matrix = new T* [rows];
 			for (int i = 0; i < rows; i++)
-				matrix[i] = new int[cols];
+				matrix[i] = new T[cols];
 		}
 
 		void fillMatrixRand()
@@ -60,26 +61,26 @@ class DynamicMatrix
 
 		DynamicMatrix() : rows(1), cols(1)
 		{
-			matrix = new int* [rows];
+			matrix = new T* [rows];
 			for (int i = 0; i < rows; i++)
-				matrix[i] = new int[cols] {0}; // Инициализация нулями
+				matrix[i] = new T[cols] {0}; // Инициализация нулями
 		}
 
 		// Конструктор с заданными размерами
-		DynamicMatrix(int r, int c) : rows(r), cols(c)
+		DynamicMatrix(T r, T c) : rows(r), cols(c)
 		{
-			matrix = new int* [rows];
+			matrix = new T* [rows];
 			for (int i = 0; i < rows; i++)
-				matrix[i] = new int[cols] {0}; // Инициализация нулями
+				matrix[i] = new T[cols] {0}; // Инициализация нулями
 		}
 
 		// Конструктор копирования
 		DynamicMatrix(const DynamicMatrix& other) : rows(other.rows), cols(other.cols)
 		{
-			matrix = new int* [rows];
+			matrix = new T* [rows];
 			for (int i = 0; i < rows; i++)
 			{
-				matrix[i] = new int[cols];
+				matrix[i] = new T[cols];
 				for (int j = 0; j < cols; j++)
 				{
 					matrix[i][j] = other.matrix[i][j];
@@ -105,10 +106,10 @@ class DynamicMatrix
 			// Копируем новые данные
 			rows = other.rows;
 			cols = other.cols;
-			matrix = new int* [rows];
+			matrix = new T* [rows];
 			for (int i = 0; i < rows; i++)
 			{
-				matrix[i] = new int[cols];
+				matrix[i] = new T[cols];
 				for (int j = 0; j < cols; j++)
 				{
 					matrix[i][j] = other.matrix[i][j];
@@ -136,7 +137,7 @@ class DynamicMatrix
 
 			int opt;
 
-			cout << "1 - auto fill" << "\n" << "2 - manual fill" << endl;
+			cout << "1 - auto fill (int)" << "\n" << "2 - manual fill" << endl;
 			cin >> opt;
 
 			switch (opt)
@@ -169,7 +170,7 @@ class DynamicMatrix
 
 		void sumRows()
 		{
-			int s_rows;
+			T s_rows;
 			cout << "sum of rows" << endl;
 			for (int i = 0; i < rows; i++)
 			{
@@ -185,7 +186,7 @@ class DynamicMatrix
 
 		void sumCols()
 		{
-			int s_cols;
+			T s_cols;
 			cout << "sum of cols" << endl;
 			for (int j = 0; j < cols; j++)
 			{
@@ -202,7 +203,7 @@ class DynamicMatrix
 		//умножение матрицы на число
 		void by()
 		{
-			int number;
+			T number;
 			cout << "input number: ";
 			cin >> number;
 
@@ -288,8 +289,8 @@ class DynamicMatrix
 
 int main()
 {
-	DynamicMatrix test;
-	DynamicMatrix test2;
+	DynamicMatrix<float> test;
+	DynamicMatrix<float> test2;
 
 
 	test.printMatrix();
@@ -297,8 +298,8 @@ int main()
 	test.fillMatrix();
 	test.printMatrix();
 
-	//test.sumRows();
-	//test.sumCols();
+	test.sumRows();
+	test.sumCols();
 
 	cout << "\n-----------------------\nmultiply by number\n" << endl;
 
@@ -333,7 +334,7 @@ int main()
 	test.printMatrix();
 	test2.printMatrix();
 
-	DynamicMatrix result = test.mul(test2);
+	DynamicMatrix<float> result = test.mul(test2);
 	result.printMatrix(); //
 
 	return 0;
